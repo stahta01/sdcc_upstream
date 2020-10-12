@@ -1,6 +1,6 @@
 ## Process this file with automake to generate Makefile.in
 #
-#   Copyright (C) 2012-2014 Free Software Foundation, Inc.
+#   Copyright (C) 2012-2018 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 AUTOMAKE_OPTIONS = dejagnu no-dist foreign
 ACLOCAL_AMFLAGS = -I .. -I ../config -I ../bfd
 
-SUBDIRS =
+SUBDIRS = doc po
 
 tooldir = $(exec_prefix)/$(target_alias)
 
@@ -40,17 +40,25 @@ LEXLIB = @LEXLIB@
 am__skiplex =
 am__skipyacc =
 
+# This is where we get zlib from.  zlibdir is -L../zlib and zlibinc is
+# -I../zlib, unless we were configured with --with-system-zlib, in which
+# case both are empty.
+ZLIB = @zlibdir@ -lz
+ZLIBINC = @zlibinc@
+
 WARN_CFLAGS = @WARN_CFLAGS@
+WARN_CFLAGS_FOR_BUILD = @WARN_CFLAGS_FOR_BUILD@
 NO_WERROR = @NO_WERROR@
-AM_CFLAGS = $(WARN_CFLAGS)
+AM_CFLAGS = $(WARN_CFLAGS) $(ZLIBINC)
+AM_CFLAGS_FOR_BUILD = $(WARN_CFLAGS_FOR_BUILD) $(ZLIBINC)
 LIBICONV = @LIBICONV@
 
 # these two are almost the same program
-AR_PROG=sdar
-RANLIB_PROG=sdranlib
+AR_PROG=ar
+RANLIB_PROG=ranlib
 
 # objcopy and strip should be the same program
-OBJCOPY_PROG=sdobjcopy
+OBJCOPY_PROG=objcopy
 STRIP_PROG=strip-new
 
 STRINGS_PROG=strings
@@ -61,8 +69,8 @@ ELFEDIT_PROG=elfedit
 
 # These should all be the same program too.
 SIZE_PROG=size
-NM_PROG=sdnm
-#OBJDUMP_PROG=objdump
+NM_PROG=nm-new
+OBJDUMP_PROG=objdump
 
 # This is the demangler, as a standalone program.
 # Note: This one is used as the installed name too, unlike the above.
@@ -78,7 +86,7 @@ DLLWRAP_PROG=dllwrap
 
 SRCONV_PROG=srconv$(EXEEXT) sysdump$(EXEEXT) coffdump$(EXEEXT)
 
-bin_PROGRAMS = $(AR_PROG) $(RANLIB_PROG) $(OBJCOPY_PROG)
+bin_PROGRAMS = $(SIZE_PROG) $(OBJDUMP_PROG) $(AR_PROG) $(STRINGS_PROG) $(RANLIB_PROG) $(OBJCOPY_PROG) @BUILD_NLMCONV@ @BUILD_SRCONV@ @BUILD_DLLTOOL@ @BUILD_WINDRES@ @BUILD_WINDMC@ $(ADDR2LINE_PROG) $(READELF_PROG) $(ELFEDIT_PROG) @BUILD_DLLWRAP@
 
 bin_SCRIPTS = @BUILD_INSTALL_MISC@
 EXTRA_SCRIPTS = embedspu
@@ -91,13 +99,13 @@ TEST_PROGS = $(BFDTEST1_PROG) $(BFDTEST2_PROG)
 
 ## We need a special rule to install the programs which are built with
 ## -new, and to rename cxxfilt to c++filt.
-RENAMED_PROGS = $(NM_PROG)
+RENAMED_PROGS = $(NM_PROG) $(STRIP_PROG) $(DEMANGLER_PROG)
 noinst_PROGRAMS = $(RENAMED_PROGS) $(TEST_PROGS) @BUILD_MISC@
 
-EXTRA_PROGRAMS =
+EXTRA_PROGRAMS = $(NLMCONV_PROG) srconv sysdump coffdump $(DLLTOOL_PROG) $(WINDRES_PROG) $(WINDMC_PROG) $(DLLWRAP_PROG)
 
 # Stuff that goes in tooldir/ if appropriate.
-TOOL_PROGS = sdnm sdar sdranlib sdobjcopy
+TOOL_PROGS = nm-new strip-new ar ranlib dlltool objdump objcopy readelf
 
 BASEDIR = $(srcdir)/..
 BFDDIR = $(BASEDIR)/bfd
@@ -186,6 +194,7 @@ check-DEJAGNU: site.exp
 	EXPECT=$(EXPECT); export EXPECT; \
 	runtest=$(RUNTEST); \
 	if $(SHELL) -c "$$runtest --version" > /dev/null 2>&1; then \
+	  CC="$(CC)" CC_FOR_BUILD="$(CC_FOR_BUILD)" \
 	  CC_FOR_TARGET="$(CC_FOR_TARGET)" CFLAGS_FOR_TARGET="$(CFLAGS)" \
 		$$runtest --tool $(DEJATOOL) --srcdir $${srcdir}/testsuite \
 			$(RUNTESTFLAGS); \
@@ -230,7 +239,7 @@ objcopy_SOURCES = objcopy.c not-strip.c rename.c $(WRITE_DEBUG_SRCS) $(BULIBS)
 strings_SOURCES = strings.c $(BULIBS)
 
 readelf_SOURCES = readelf.c version.c unwind-ia64.c dwarf.c $(ELFLIBS)
-readelf_LDADD   = $(LIBINTL) $(LIBIBERTY)
+readelf_LDADD   = $(LIBINTL) $(LIBIBERTY) $(ZLIB)
 
 elfedit_SOURCES = elfedit.c version.c $(ELFLIBS)
 elfedit_LDADD = $(LIBINTL) $(LIBIBERTY)
@@ -298,17 +307,17 @@ sysinfo$(EXEEXT_FOR_BUILD): sysinfo.@OBJEXT@ syslex_wrap.@OBJEXT@
 	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) -o $@ sysinfo.@OBJEXT@ syslex_wrap.@OBJEXT@
 
 syslex_wrap.@OBJEXT@: syslex_wrap.c syslex.c sysinfo.h config.h
-	$(CC_FOR_BUILD) -c -I. -I$(srcdir) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(NO_WERROR) $(srcdir)/syslex_wrap.c
+	$(CC_FOR_BUILD) -c -I. -I$(srcdir) $(AM_CFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(NO_WERROR) $(srcdir)/syslex_wrap.c
 
 sysinfo.@OBJEXT@: sysinfo.c
 	if [ -r sysinfo.c ]; then \
-	  $(CC_FOR_BUILD) -c -I. $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(NO_WERROR) sysinfo.c ; \
+	  $(CC_FOR_BUILD) -c -I. $(AM_CFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(NO_WERROR) sysinfo.c ; \
 	else \
-	  $(CC_FOR_BUILD) -c -I. $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(NO_WERROR) $(srcdir)/sysinfo.c ; \
+	  $(CC_FOR_BUILD) -c -I. $(AM_CFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(NO_WERROR) $(srcdir)/sysinfo.c ; \
 	fi
 
 bin2c$(EXEEXT_FOR_BUILD): bin2c.c
-	$(CC_FOR_BUILD) -o $@ $(AM_CPPFLAGS) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) $(srcdir)/bin2c.c
+	$(CC_FOR_BUILD) -o $@ $(AM_CPPFLAGS) $(AM_CFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) $(srcdir)/bin2c.c
 
 embedspu: embedspu.sh Makefile
 	awk '/^program_transform_name=/ {print "program_transform_name=\"$(program_transform_name)\""; next} {print}' < $< > $@
