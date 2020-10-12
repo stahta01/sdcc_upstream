@@ -3,7 +3,7 @@
 #
 # Makefile for directory with subdirs to build.
 #   Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998,
-#   1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
+#   1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
 #   Free Software Foundation
 #
 # This file is free software; you can redistribute it and/or modify
@@ -206,6 +206,7 @@ HOST_EXPORTS = \
 	WINDMC="$(WINDMC)"; export WINDMC; \
 	OBJCOPY="$(OBJCOPY)"; export OBJCOPY; \
 	OBJDUMP="$(OBJDUMP)"; export OBJDUMP; \
+	READELF="$(READELF)"; export READELF; \
 	AR_FOR_TARGET="$(AR_FOR_TARGET)"; export AR_FOR_TARGET; \
 	AS_FOR_TARGET="$(AS_FOR_TARGET)"; export AS_FOR_TARGET; \
 	GCC_FOR_TARGET="$(GCC_FOR_TARGET)"; export GCC_FOR_TARGET; \
@@ -213,6 +214,7 @@ HOST_EXPORTS = \
 	NM_FOR_TARGET="$(NM_FOR_TARGET)"; export NM_FOR_TARGET; \
 	OBJDUMP_FOR_TARGET="$(OBJDUMP_FOR_TARGET)"; export OBJDUMP_FOR_TARGET; \
 	RANLIB_FOR_TARGET="$(RANLIB_FOR_TARGET)"; export RANLIB_FOR_TARGET; \
+	READELF_FOR_TARGET="$(READELF_FOR_TARGET)"; export READELF_FOR_TARGET; \
 	TOPLEVEL_CONFIGURE_ARGUMENTS="$(TOPLEVEL_CONFIGURE_ARGUMENTS)"; export TOPLEVEL_CONFIGURE_ARGUMENTS; \
 	HOST_LIBS="$(STAGE1_LIBS)"; export HOST_LIBS; \
 	GMPLIBS="$(HOST_GMPLIBS)"; export GMPLIBS; \
@@ -285,6 +287,7 @@ BASE_TARGET_EXPORTS = \
 	NM="$(COMPILER_NM_FOR_TARGET)"; export NM; \
 	OBJDUMP="$(OBJDUMP_FOR_TARGET)"; export OBJDUMP; \
 	RANLIB="$(RANLIB_FOR_TARGET)"; export RANLIB; \
+	READELF="$(READELF_FOR_TARGET)"; export READELF; \
 	STRIP="$(STRIP_FOR_TARGET)"; export STRIP; \
 	WINDRES="$(WINDRES_FOR_TARGET)"; export WINDRES; \
 	WINDMC="$(WINDMC_FOR_TARGET)"; export WINDMC; \
@@ -397,6 +400,7 @@ LIPO = @LIPO@
 NM = @NM@
 OBJDUMP = @OBJDUMP@
 RANLIB = @RANLIB@
+READELF = @READELF@
 STRIP = @STRIP@
 WINDRES = @WINDRES@
 WINDMC = @WINDMC@
@@ -555,6 +559,7 @@ LIPO_FOR_TARGET=@LIPO_FOR_TARGET@
 NM_FOR_TARGET=@NM_FOR_TARGET@
 OBJDUMP_FOR_TARGET=@OBJDUMP_FOR_TARGET@
 RANLIB_FOR_TARGET=@RANLIB_FOR_TARGET@
+READELF_FOR_TARGET=@READELF_FOR_TARGET@
 STRIP_FOR_TARGET=@STRIP_FOR_TARGET@
 WINDRES_FOR_TARGET=@WINDRES_FOR_TARGET@
 WINDMC_FOR_TARGET=@WINDMC_FOR_TARGET@
@@ -616,23 +621,13 @@ TARGET_LIB_PATH_libgomp = $$r/$(TARGET_SUBDIR)/libgomp/.libs:
 
 # This is the list of directories that may be needed in RPATH_ENVVAR
 # so that programs built for the host machine work.
-HOST_LIB_PATH = $(HOST_LIB_PATH_bfd)$(HOST_LIB_PATH_opcodes)$(HOST_LIB_PATH_gmp)$(HOST_LIB_PATH_mpfr)$(HOST_LIB_PATH_mpc)$(HOST_LIB_PATH_ppl)$(HOST_LIB_PATH_cloog)$(HOST_LIB_PATH_libelf)
+HOST_LIB_PATH = $(HOST_LIB_PATH_gmp)$(HOST_LIB_PATH_mpfr)$(HOST_LIB_PATH_mpc)$(HOST_LIB_PATH_ppl)$(HOST_LIB_PATH_cloog)$(HOST_LIB_PATH_libelf)
 
 # Define HOST_LIB_PATH_gcc here, for the sake of TARGET_LIB_PATH, ouch
 @if gcc
 HOST_LIB_PATH_gcc = $$r/$(HOST_SUBDIR)/gcc$(GCC_SHLIB_SUBDIR):$$r/$(HOST_SUBDIR)/prev-gcc$(GCC_SHLIB_SUBDIR):
 @endif gcc
 
-
-@if bfd
-HOST_LIB_PATH_bfd = \
-  $$r/$(HOST_SUBDIR)/bfd/.libs:$$r/$(HOST_SUBDIR)/prev-bfd/.libs:
-@endif bfd
-
-@if opcodes
-HOST_LIB_PATH_opcodes = \
-  $$r/$(HOST_SUBDIR)/opcodes/.libs:$$r/$(HOST_SUBDIR)/prev-opcodes/.libs:
-@endif opcodes
 
 @if gmp
 HOST_LIB_PATH_gmp = \
@@ -767,6 +762,7 @@ BASE_FLAGS_TO_PASS = \
 	"NM_FOR_TARGET=$(NM_FOR_TARGET)" \
 	"OBJDUMP_FOR_TARGET=$(OBJDUMP_FOR_TARGET)" \
 	"RANLIB_FOR_TARGET=$(RANLIB_FOR_TARGET)" \
+	"READELF_FOR_TARGET=$(READELF_FOR_TARGET)" \
 	"STRIP_FOR_TARGET=$(STRIP_FOR_TARGET)" \
 	"WINDRES_FOR_TARGET=$(WINDRES_FOR_TARGET)" \
 	"WINDMC_FOR_TARGET=$(WINDMC_FOR_TARGET)" \
@@ -815,6 +811,7 @@ EXTRA_HOST_FLAGS = \
 	'NM=$(NM)' \
 	'OBJDUMP=$(OBJDUMP)' \
 	'RANLIB=$(RANLIB)' \
+	'READELF=$(READELF)' \
 	'STRIP=$(STRIP)' \
 	'WINDRES=$(WINDRES)' \
 	'WINDMC=$(WINDMC)'
@@ -855,6 +852,7 @@ EXTRA_TARGET_FLAGS = \
 	'NM=$(COMPILER_NM_FOR_TARGET)' \
 	'OBJDUMP=$$(OBJDUMP_FOR_TARGET)' \
 	'RANLIB=$$(RANLIB_FOR_TARGET)' \
+	'READELF=$$(READELF_FOR_TARGET)' \
 	'WINDRES=$$(WINDRES_FOR_TARGET)' \
 	'WINDMC=$$(WINDMC_FOR_TARGET)' \
 	'XGCC_FLAGS_FOR_TARGET=$(XGCC_FLAGS_FOR_TARGET)' \
@@ -871,10 +869,7 @@ TARGET_FLAGS_TO_PASS = $(BASE_FLAGS_TO_PASS) $(EXTRA_TARGET_FLAGS)
 EXTRA_GCC_FLAGS = \
 	"GCC_FOR_TARGET=$(GCC_FOR_TARGET)" \
 	"`echo 'STMP_FIXPROTO=$(STMP_FIXPROTO)' | sed -e s'/[^=][^=]*=$$/XFOO=/'`" \
-	"`echo 'LIMITS_H_TEST=$(LIMITS_H_TEST)' | sed -e s'/[^=][^=]*=$$/XFOO=/'`" \
-	"`echo 'LIBGCC2_CFLAGS=$(LIBGCC2_CFLAGS)' | sed -e s'/[^=][^=]*=$$/XFOO=/'`" \
-	"`echo 'LIBGCC2_DEBUG_CFLAGS=$(LIBGCC2_DEBUG_CFLAGS)' | sed -e s'/[^=][^=]*=$$/XFOO=/'`" \
-	"`echo 'LIBGCC2_INCLUDES=$(LIBGCC2_INCLUDES)' | sed -e s'/[^=][^=]*=$$/XFOO=/'`"
+	"`echo 'LIMITS_H_TEST=$(LIMITS_H_TEST)' | sed -e s'/[^=][^=]*=$$/XFOO=/'`"
 
 GCC_FLAGS_TO_PASS = $(BASE_FLAGS_TO_PASS) $(EXTRA_HOST_FLAGS) $(EXTRA_GCC_FLAGS)
 
@@ -2146,10 +2141,19 @@ local-distclean:
 	else true; fi
 	-rm -f texinfo/po/Makefile texinfo/po/Makefile.in texinfo/info/Makefile
 	-rm -f texinfo/doc/Makefile texinfo/po/POTFILES
-	-rmdir texinfo/doc texinfo/info texinfo/intl texinfo/lib 2>/dev/null
-	-rmdir texinfo/makeinfo texinfo/po texinfo/util 2>/dev/null
-	-rmdir fastjar gcc libiberty texinfo zlib 2>/dev/null
-	-find . -name config.cache -exec rm -f {} \; \; 2>/dev/null
+	-if [ -d texinfo/doc ];      then rmdir texinfo/doc; fi
+	-if [ -d texinfo/info ];     then rmdir texinfo/info; fi
+	-if [ -d texinfo/intl ];     then rmdir texinfo/intl; fi
+	-if [ -d texinfo/lib ];      then rmdir texinfo/lib; fi
+	-if [ -d texinfo/makeinfo ]; then rmdir texinfo/makeinfo; fi
+	-if [ -d texinfo/po ];       then rmdir texinfo/po; fi
+	-if [ -d texinfo/util ];     then rmdir texinfo/util; fi
+	-if [ -d fastjar ];          then rmdir fastjar; fi
+	-if [ -d gcc ];              then rmdir gcc; fi
+#	-if [ -d libiberty ];        then rmdir libiberty; fi
+	-if [ -d texinfo ];          then rmdir texinfo; fi
+	-if [ -d zlib ];             then rmdir zlib; fi
+	-find . -name config.cache -exec rm -f {} \;
 
 local-maintainer-clean:
 	@echo "This command is intended for maintainers to use;"
@@ -2386,7 +2390,13 @@ install-target:  \
     maybe-install-target-libgomp
 
 uninstall:
-	@echo "the uninstall target is not supported in this tree"
+	@: $(MAKE); $(unstage)
+	@r=`${PWD_COMMAND}`; export r; \
+	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
+	$(MAKE) $(RECURSE_FLAGS_TO_PASS) uninstall-host
+
+.PHONY: uninstall-host
+uninstall-host: maybe-uninstall-binutils
 
 .PHONY: install.all
 install.all: install-no-fixedincludes
@@ -5151,7 +5161,7 @@ check-binutils:
 
 @endif binutils
 
-.PHONY: install-binutils maybe-install-binutils
+.PHONY: install-binutils maybe-install-binutils uninstall-binutils maybe-uninstall-binutils
 maybe-install-binutils:
 @if binutils
 maybe-install-binutils: install-binutils
@@ -5164,6 +5174,18 @@ install-binutils: installdirs
 	(cd $(HOST_SUBDIR)/binutils && \
 	  $(MAKE) $(FLAGS_TO_PASS)  install)
 
+@endif binutils
+
+maybe-uninstall-binutils:
+@if binutils
+maybe-uninstall-binutils: uninstall-binutils
+uninstall-binutils:
+	@: $(MAKE); $(unstage)
+	@r=`${PWD_COMMAND}`; export r; \
+	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
+	$(HOST_EXPORTS) \
+	(cd $(HOST_SUBDIR)/binutils && \
+	  $(MAKE) $(FLAGS_TO_PASS)  uninstall)
 @endif binutils
 
 .PHONY: install-strip-binutils maybe-install-strip-binutils

@@ -2,7 +2,7 @@
 # Originally written by K. Richard Pixley <rich@cygnus.com>.
 #
 # Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998,
-# 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
+# 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012
 # Free Software Foundation
 #
 # This file is part of the libiberty library.
@@ -98,7 +98,8 @@ FLAGS_TO_PASS = \
 	"tooldir=$(tooldir)"
 
 # Subdirectories to recurse into. We need to override this during cleaning
-SUBDIRS = testsuite
+####SUBDIRS = testsuite
+SUBDIRS =
 
 # FIXME: add @BUILD_INFO@ once we're sure it works for everyone.
 all: stamp-picdir $(TARGETLIB) required-list all-subdir
@@ -108,7 +109,7 @@ all: stamp-picdir $(TARGETLIB) required-list all-subdir
 check: check-subdir
 installcheck: installcheck-subdir
 
-@host_makefile_frag@
+####@host_makefile_frag@
 
 INCDIR=$(srcdir)/$(MULTISRCTOP)../include
 
@@ -122,11 +123,51 @@ COMPILE.c = $(CC) -c @DEFS@ $(CFLAGS) $(CPPFLAGS) -I. -I$(INCDIR) $(HDEFINES) @a
 # (alphabetical), and add them to REQUIRED_OFILES, or
 # CONFIGURED_OFILES and funcs in configure.ac.  Also run "make maint-deps"
 # to build the new rules.
+####CFILES = alloca.c argv.c asprintf.c atexit.c				\
+####	basename.c bcmp.c bcopy.c bsearch.c bzero.c			\
+####	calloc.c choose-temp.c clock.c concat.c cp-demangle.c		\
+####	 cp-demint.c cplus-dem.c crc32.c				\
+####	dwarfnames.c dyn-string.c					\
+####	fdmatch.c ffs.c fibheap.c filename_cmp.c floatformat.c		\
+####	fnmatch.c fopen_unlocked.c					\
+####	getcwd.c getopt.c getopt1.c getpagesize.c getpwd.c getruntime.c	\
+####         gettimeofday.c                                                 \
+####	hashtab.c hex.c							\
+####	index.c insque.c						\
+####	lbasename.c							\
+####	lrealpath.c							\
+####	make-relative-prefix.c						\
+####	make-temp-file.c md5.c memchr.c memcmp.c memcpy.c memmem.c	\
+####	 memmove.c mempcpy.c memset.c mkstemps.c			\
+####	objalloc.c obstack.c						\
+####	partition.c pexecute.c						\
+####	 pex-common.c pex-djgpp.c pex-msdos.c pex-one.c			\
+####	 pex-unix.c pex-win32.c						\
+####         physmem.c putenv.c						\
+####	random.c regex.c rename.c rindex.c				\
+####	safe-ctype.c setenv.c setproctitle.c sha1.c sigsetmask.c        \
+####	 simple-object.c simple-object-coff.c simple-object-elf.c	\
+####	 simple-object-mach-o.c						\
+####         snprintf.c sort.c						\
+####	 spaces.c splay-tree.c stack-limit.c stpcpy.c stpncpy.c		\
+####	 strcasecmp.c strchr.c strdup.c strerror.c strncasecmp.c	\
+####	 strncmp.c strrchr.c strsignal.c strstr.c strtod.c strtol.c	\
+####	 strtoul.c strndup.c strverscmp.c				\
+####	timeval-utils.c tmpnam.c					\
+####	unlink-if-ordinary.c						\
+####	vasprintf.c vfork.c vfprintf.c vprintf.c vsnprintf.c vsprintf.c	\
+####	waitpid.c							\
+####	xatexit.c xexit.c xmalloc.c xmemdup.c xstrdup.c xstrerror.c	\
+####	 xstrndup.c
+
+#### Excluded pex-common.c, pex-djgpp.c, pex-msdos.c, pex-one.c,
+#### pex-unix.c, pex-win32.c since pex-unix.c doesn't compole on cygwim
+#### mingw and they are not needed by sdbinutils
 CFILES = alloca.c argv.c asprintf.c atexit.c				\
 	basename.c bcmp.c bcopy.c bsearch.c bzero.c			\
 	calloc.c choose-temp.c clock.c concat.c cp-demangle.c		\
 	 cp-demint.c cplus-dem.c crc32.c				\
-	dyn-string.c							\
+	dwarfnames.c dyn-string.c					\
 	fdmatch.c ffs.c fibheap.c filename_cmp.c floatformat.c		\
 	fnmatch.c fopen_unlocked.c					\
 	getcwd.c getopt.c getopt1.c getpagesize.c getpwd.c getruntime.c	\
@@ -139,9 +180,7 @@ CFILES = alloca.c argv.c asprintf.c atexit.c				\
 	make-temp-file.c md5.c memchr.c memcmp.c memcpy.c memmem.c	\
 	 memmove.c mempcpy.c memset.c mkstemps.c			\
 	objalloc.c obstack.c						\
-	partition.c pexecute.c						\
-	 pex-common.c pex-djgpp.c pex-msdos.c pex-one.c			\
-	 pex-unix.c pex-win32.c						\
+	partition.c							\
          physmem.c putenv.c						\
 	random.c regex.c rename.c rindex.c				\
 	safe-ctype.c setenv.c setproctitle.c sha1.c sigsetmask.c        \
@@ -152,21 +191,54 @@ CFILES = alloca.c argv.c asprintf.c atexit.c				\
 	 strcasecmp.c strchr.c strdup.c strerror.c strncasecmp.c	\
 	 strncmp.c strrchr.c strsignal.c strstr.c strtod.c strtol.c	\
 	 strtoul.c strndup.c strverscmp.c				\
-	tmpnam.c							\
+	timeval-utils.c tmpnam.c					\
 	unlink-if-ordinary.c						\
 	vasprintf.c vfork.c vfprintf.c vprintf.c vsnprintf.c vsprintf.c	\
 	waitpid.c							\
 	xatexit.c xexit.c xmalloc.c xmemdup.c xstrdup.c xstrerror.c	\
 	 xstrndup.c
-
 # These are always included in the library.  The first four are listed
 # first and by compile time to optimize parallel builds.
+####REQUIRED_OFILES =							\
+####	./regex.$(objext) ./cplus-dem.$(objext) ./cp-demangle.$(objext) \
+####	./md5.$(objext) ./sha1.$(objext) ./alloca.$(objext)		\
+####	./argv.$(objext)						\
+####	./choose-temp.$(objext) ./concat.$(objext)			\
+####	./cp-demint.$(objext) ./crc32.$(objext)				\
+####	./dwarfnames.$(objext) ./dyn-string.$(objext)			\
+####	./fdmatch.$(objext) ./fibheap.$(objext)				\
+####	./filename_cmp.$(objext) ./floatformat.$(objext)		\
+####	./fnmatch.$(objext) ./fopen_unlocked.$(objext)			\
+####	./getopt.$(objext) ./getopt1.$(objext) ./getpwd.$(objext)	\
+####	./getruntime.$(objext) ./hashtab.$(objext) ./hex.$(objext)	\
+####	./lbasename.$(objext) ./lrealpath.$(objext)			\
+####	./make-relative-prefix.$(objext) ./make-temp-file.$(objext)	\
+####	./objalloc.$(objext)						\
+####	./obstack.$(objext)						\
+####	./partition.$(objext) ./pexecute.$(objext) ./physmem.$(objext)	\
+####	./pex-common.$(objext) ./pex-one.$(objext)			\
+####	./@pexecute@.$(objext)						\
+####	./safe-ctype.$(objext)						\
+####	./simple-object.$(objext) ./simple-object-coff.$(objext)	\
+####	./simple-object-elf.$(objext) ./simple-object-mach-o.$(objext)	\
+####	./sort.$(objext) ./spaces.$(objext)				\
+####	./splay-tree.$(objext) ./stack-limit.$(objext)			\
+####	./strerror.$(objext) ./strsignal.$(objext)			\
+####	./timeval-utils.$(objext) ./unlink-if-ordinary.$(objext)	\
+####	./xatexit.$(objext) ./xexit.$(objext) ./xmalloc.$(objext)	\
+####	./xmemdup.$(objext) ./xstrdup.$(objext) ./xstrerror.$(objext)	\
+####	./xstrndup.$(objext)
+
+#### Excluded ./pexecute.$(objext), ./pex-common.$(objext),
+#### ./pex-one.$(objext) and ./@pexecute@.$(objext) since pex-unix.c
+#### doesn't compole on cygwim mingw and they are not needed by sdbinutils
 REQUIRED_OFILES =							\
 	./regex.$(objext) ./cplus-dem.$(objext) ./cp-demangle.$(objext) \
 	./md5.$(objext) ./sha1.$(objext) ./alloca.$(objext)		\
 	./argv.$(objext)						\
 	./choose-temp.$(objext) ./concat.$(objext)			\
-	./cp-demint.$(objext) ./crc32.$(objext) ./dyn-string.$(objext)	\
+	./cp-demint.$(objext) ./crc32.$(objext)				\
+	./dwarfnames.$(objext) ./dyn-string.$(objext)			\
 	./fdmatch.$(objext) ./fibheap.$(objext)				\
 	./filename_cmp.$(objext) ./floatformat.$(objext)		\
 	./fnmatch.$(objext) ./fopen_unlocked.$(objext)			\
@@ -176,16 +248,14 @@ REQUIRED_OFILES =							\
 	./make-relative-prefix.$(objext) ./make-temp-file.$(objext)	\
 	./objalloc.$(objext)						\
 	./obstack.$(objext)						\
-	./partition.$(objext) ./pexecute.$(objext) ./physmem.$(objext)	\
-	./pex-common.$(objext) ./pex-one.$(objext)			\
-	./@pexecute@.$(objext)						\
+	./partition.$(objext) ./physmem.$(objext)			\
 	./safe-ctype.$(objext)						\
 	./simple-object.$(objext) ./simple-object-coff.$(objext)	\
 	./simple-object-elf.$(objext) ./simple-object-mach-o.$(objext)	\
 	./sort.$(objext) ./spaces.$(objext)				\
 	./splay-tree.$(objext) ./stack-limit.$(objext)			\
-	./strerror.$(objext)						\
-	./strsignal.$(objext) ./unlink-if-ordinary.$(objext)		\
+	./strerror.$(objext) ./strsignal.$(objext)			\
+	./timeval-utils.$(objext) ./unlink-if-ordinary.$(objext)	\
 	./xatexit.$(objext) ./xexit.$(objext) ./xmalloc.$(objext)	\
 	./xmemdup.$(objext) ./xstrdup.$(objext) ./xstrerror.$(objext)	\
 	./xstrndup.$(objext)
@@ -193,6 +263,38 @@ REQUIRED_OFILES =							\
 # These are all the objects that configure may add to the library via
 # $funcs or EXTRA_OFILES.  This list exists here only for "make
 # maint-missing" and "make check".
+####CONFIGURED_OFILES = ./asprintf.$(objext) ./atexit.$(objext)		\
+####	./basename.$(objext) ./bcmp.$(objext) ./bcopy.$(objext)		\
+####	./bsearch.$(objext) ./bzero.$(objext)				\
+####	./calloc.$(objext) ./clock.$(objext) ./copysign.$(objext)	\
+####	./_doprnt.$(objext)						\
+####	 ./ffs.$(objext)						\
+####	./getcwd.$(objext) ./getpagesize.$(objext)			\
+####	 ./gettimeofday.$(objext)					\
+####	./index.$(objext) ./insque.$(objext)				\
+####	./memchr.$(objext) ./memcmp.$(objext) ./memcpy.$(objext) 	\
+####	./memmem.$(objext) ./memmove.$(objext)				\
+####	 ./mempcpy.$(objext) ./memset.$(objext) ./mkstemps.$(objext)	\
+####	./pex-djgpp.$(objext) ./pex-msdos.$(objext)			\
+####	 ./pex-unix.$(objext) ./pex-win32.$(objext)			\
+####	 ./putenv.$(objext)						\
+####	./random.$(objext) ./rename.$(objext) ./rindex.$(objext)	\
+####	./setenv.$(objext) 						\
+####	 ./setproctitle.$(objext)					\
+####	 ./sigsetmask.$(objext) ./snprintf.$(objext)			\
+####	 ./stpcpy.$(objext) ./stpncpy.$(objext) ./strcasecmp.$(objext)	\
+####	 ./strchr.$(objext) ./strdup.$(objext) ./strncasecmp.$(objext)	\
+####	 ./strncmp.$(objext) ./strndup.$(objext) ./strrchr.$(objext)	\
+####	 ./strstr.$(objext) ./strtod.$(objext) ./strtol.$(objext)	\
+####	 ./strtoul.$(objext) ./strverscmp.$(objext)			\
+####	./tmpnam.$(objext)						\
+####	./vasprintf.$(objext) ./vfork.$(objext) ./vfprintf.$(objext)	\
+####	 ./vprintf.$(objext) ./vsnprintf.$(objext) ./vsprintf.$(objext)	\
+####	./waitpid.$(objext)
+
+#### Excluded ./pex-djgpp.$(objext), ./pex-msdos.$(objext),
+#### ./pex-unix.$(objext) and ./pex-win32.$(objext) since pex-unix.c
+#### doesn't compole on cygwim mingw and they are not needed by sdbinutils
 CONFIGURED_OFILES = ./asprintf.$(objext) ./atexit.$(objext)		\
 	./basename.$(objext) ./bcmp.$(objext) ./bcopy.$(objext)		\
 	./bsearch.$(objext) ./bzero.$(objext)				\
@@ -205,8 +307,6 @@ CONFIGURED_OFILES = ./asprintf.$(objext) ./atexit.$(objext)		\
 	./memchr.$(objext) ./memcmp.$(objext) ./memcpy.$(objext) 	\
 	./memmem.$(objext) ./memmove.$(objext)				\
 	 ./mempcpy.$(objext) ./memset.$(objext) ./mkstemps.$(objext)	\
-	./pex-djgpp.$(objext) ./pex-msdos.$(objext)			\
-	 ./pex-unix.$(objext) ./pex-win32.$(objext)			\
 	 ./putenv.$(objext)						\
 	./random.$(objext) ./rename.$(objext) ./rindex.$(objext)	\
 	./setenv.$(objext) 						\
@@ -235,7 +335,8 @@ INSTALLED_HEADERS =                                                     \
 	$(INCDIR)/partition.h                                           \
 	$(INCDIR)/safe-ctype.h                                          \
 	$(INCDIR)/sort.h                                                \
-	$(INCDIR)/splay-tree.h
+	$(INCDIR)/splay-tree.h \
+	$(INCDIR)/timeval-utils.h
 
 $(TARGETLIB): $(REQUIRED_OFILES) $(EXTRA_OFILES) $(LIBOBJS)
 	-rm -f $(TARGETLIB) pic/$(TARGETLIB)
@@ -352,21 +453,21 @@ install-strip: install
 # since it will be passed the multilib flags.
 MULTIOSDIR = `$(CC) $(CFLAGS) -print-multi-os-directory`
 install_to_libdir: all
-	${mkinstalldirs} $(DESTDIR)$(libdir)/$(MULTIOSDIR)
-	$(INSTALL_DATA) $(TARGETLIB) $(DESTDIR)$(libdir)/$(MULTIOSDIR)/$(TARGETLIB)n
-	( cd $(DESTDIR)$(libdir)/$(MULTIOSDIR) ; chmod 644 $(TARGETLIB)n ;$(RANLIB) $(TARGETLIB)n )
-	mv -f $(DESTDIR)$(libdir)/$(MULTIOSDIR)/$(TARGETLIB)n $(DESTDIR)$(libdir)/$(MULTIOSDIR)/$(TARGETLIB)
-	if test -n "${target_header_dir}"; then \
-	  case "${target_header_dir}" in \
-	    /*)    thd=${target_header_dir};; \
-	    *)     thd=${includedir}/${target_header_dir};; \
-	  esac; \
-	  ${mkinstalldirs} $(DESTDIR)$${thd}; \
-	  for h in ${INSTALLED_HEADERS}; do \
-	    ${INSTALL_DATA} $$h $(DESTDIR)$${thd}; \
-	  done; \
-	fi
-	@$(MULTIDO) $(FLAGS_TO_PASS) multi-do DO=install
+#	${mkinstalldirs} $(DESTDIR)$(libdir)/$(MULTIOSDIR)
+#	$(INSTALL_DATA) $(TARGETLIB) $(DESTDIR)$(libdir)/$(MULTIOSDIR)/$(TARGETLIB)n
+#	( cd $(DESTDIR)$(libdir)/$(MULTIOSDIR) ; chmod 644 $(TARGETLIB)n ;$(RANLIB) $(TARGETLIB)n )
+#	mv -f $(DESTDIR)$(libdir)/$(MULTIOSDIR)/$(TARGETLIB)n $(DESTDIR)$(libdir)/$(MULTIOSDIR)/$(TARGETLIB)
+#	if test -n "${target_header_dir}"; then \
+#	  case "${target_header_dir}" in \
+#	    /*)    thd=${target_header_dir};; \
+#	    *)     thd=${includedir}/${target_header_dir};; \
+#	  esac; \
+#	  ${mkinstalldirs} $(DESTDIR)$${thd}; \
+#	  for h in ${INSTALLED_HEADERS}; do \
+#	    ${INSTALL_DATA} $$h $(DESTDIR)$${thd}; \
+#	  done; \
+#	fi
+#	@$(MULTIDO) $(FLAGS_TO_PASS) multi-do DO=install
 
 install_to_tooldir: all
 	${mkinstalldirs} $(DESTDIR)$(tooldir)/lib/$(MULTIOSDIR)
@@ -439,9 +540,10 @@ clean: clean-subdir
 distclean: distclean-subdir
 	$(MAKE) SUBDIRS="" clean
 	@$(MULTICLEAN) multi-clean DO=distclean
-	-rm -f *~ Makefile config.cache config.status xhost-mkfrag TAGS multilib.out
+####	-rm -f *~ Makefile config.cache config.status xhost-mkfrag TAGS multilib.out
+	-rm -f *~ Makefile config.cache config.status TAGS multilib.out
 	-rm -f config.log
-	-rmdir testsuite 2>/dev/null
+####	-rmdir testsuite 2>/dev/null
 maintainer-clean realclean: maintainer-clean-subdir
 	$(MAKE) SUBDIRS="" distclean
 
@@ -619,6 +721,13 @@ $(CONFIGURED_OFILES): stamp-picdir
 	  $(COMPILE.c) $(PICFLAG) $(srcdir)/crc32.c -o pic/$@; \
 	else true; fi
 	$(COMPILE.c) $(srcdir)/crc32.c $(OUTPUT_OPTION)
+
+./dwarfnames.$(objext): $(srcdir)/dwarfnames.c $(INCDIR)/dwarf2.h \
+	$(INCDIR)/dwarf2.def
+	if [ x"$(PICFLAG)" != x ]; then \
+	  $(COMPILE.c) $(PICFLAG) $(srcdir)/dwarfnames.c -o pic/$@; \
+	else true; fi
+	$(COMPILE.c) $(srcdir)/dwarfnames.c $(OUTPUT_OPTION)
 
 ./dyn-string.$(objext): $(srcdir)/dyn-string.c config.h $(INCDIR)/ansidecl.h \
 	$(INCDIR)/dyn-string.h $(INCDIR)/libiberty.h
@@ -856,55 +965,55 @@ $(CONFIGURED_OFILES): stamp-picdir
 	else true; fi
 	$(COMPILE.c) $(srcdir)/partition.c $(OUTPUT_OPTION)
 
-./pex-common.$(objext): $(srcdir)/pex-common.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-common.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pex-common.c $(OUTPUT_OPTION)
+####./pex-common.$(objext): $(srcdir)/pex-common.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-common.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pex-common.c $(OUTPUT_OPTION)
 
-./pex-djgpp.$(objext): $(srcdir)/pex-djgpp.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-djgpp.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pex-djgpp.c $(OUTPUT_OPTION)
+####./pex-djgpp.$(objext): $(srcdir)/pex-djgpp.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-djgpp.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pex-djgpp.c $(OUTPUT_OPTION)
 
-./pex-msdos.$(objext): $(srcdir)/pex-msdos.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h \
-	$(INCDIR)/safe-ctype.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-msdos.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pex-msdos.c $(OUTPUT_OPTION)
+####./pex-msdos.$(objext): $(srcdir)/pex-msdos.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h \
+####	$(INCDIR)/safe-ctype.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-msdos.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pex-msdos.c $(OUTPUT_OPTION)
 
-./pex-one.$(objext): $(srcdir)/pex-one.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-one.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pex-one.c $(OUTPUT_OPTION)
+####./pex-one.$(objext): $(srcdir)/pex-one.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-one.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pex-one.c $(OUTPUT_OPTION)
 
-./pex-unix.$(objext): $(srcdir)/pex-unix.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-unix.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pex-unix.c $(OUTPUT_OPTION)
+####./pex-unix.$(objext): $(srcdir)/pex-unix.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-unix.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pex-unix.c $(OUTPUT_OPTION)
 
-./pex-win32.$(objext): $(srcdir)/pex-win32.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-win32.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pex-win32.c $(OUTPUT_OPTION)
+####./pex-win32.$(objext): $(srcdir)/pex-win32.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h $(srcdir)/pex-common.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pex-win32.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pex-win32.c $(OUTPUT_OPTION)
 
-./pexecute.$(objext): $(srcdir)/pexecute.c config.h $(INCDIR)/ansidecl.h \
-	$(INCDIR)/libiberty.h
-	if [ x"$(PICFLAG)" != x ]; then \
-	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pexecute.c -o pic/$@; \
-	else true; fi
-	$(COMPILE.c) $(srcdir)/pexecute.c $(OUTPUT_OPTION)
+####./pexecute.$(objext): $(srcdir)/pexecute.c config.h $(INCDIR)/ansidecl.h \
+####	$(INCDIR)/libiberty.h
+####	if [ x"$(PICFLAG)" != x ]; then \
+####	  $(COMPILE.c) $(PICFLAG) $(srcdir)/pexecute.c -o pic/$@; \
+####	else true; fi
+####	$(COMPILE.c) $(srcdir)/pexecute.c $(OUTPUT_OPTION)
 
 ./physmem.$(objext): $(srcdir)/physmem.c config.h $(INCDIR)/ansidecl.h \
 	$(INCDIR)/libiberty.h
@@ -1140,6 +1249,13 @@ $(CONFIGURED_OFILES): stamp-picdir
 	  $(COMPILE.c) $(PICFLAG) $(srcdir)/strverscmp.c -o pic/$@; \
 	else true; fi
 	$(COMPILE.c) $(srcdir)/strverscmp.c $(OUTPUT_OPTION)
+
+./timeval-utils.$(objext): $(srcdir)/timeval-utils.c config.h \
+	$(INCDIR)/timeval-utils.h
+	if [ x"$(PICFLAG)" != x ]; then \
+	  $(COMPILE.c) $(PICFLAG) $(srcdir)/timeval-utils.c -o pic/$@; \
+	else true; fi
+	$(COMPILE.c) $(srcdir)/timeval-utils.c $(OUTPUT_OPTION)
 
 ./tmpnam.$(objext): $(srcdir)/tmpnam.c
 	if [ x"$(PICFLAG)" != x ]; then \

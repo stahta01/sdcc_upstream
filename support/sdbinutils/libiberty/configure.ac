@@ -176,20 +176,20 @@ if [[ -n "${with_build_subdir}" ]]; then
   enable_shared=no
 fi
 
-frag=
-case "${host}" in
-  rs6000-ibm-aix3.1 | rs6000-ibm-aix)
-                        frag=mh-aix ;;
-  *-*-cxux7*)		frag=mh-cxux7 ;;
-  *-*-freebsd2.1.*)	frag=mh-fbsd21 ;;
-  *-*-freebsd2.2.[[012]])	frag=mh-fbsd21 ;;
-  i370-*-opened*)       frag=mh-openedition ;;
-  i[[34567]]86-*-windows*)	frag=mh-windows ;;
-esac
+####frag=
+####case "${host}" in
+####  rs6000-ibm-aix3.1 | rs6000-ibm-aix)
+####                        frag=mh-aix ;;
+####  *-*-cxux7*)		frag=mh-cxux7 ;;
+####  *-*-freebsd2.1.*)	frag=mh-fbsd21 ;;
+####  *-*-freebsd2.2.[[012]])	frag=mh-fbsd21 ;;
+####  i370-*-opened*)       frag=mh-openedition ;;
+####  i[[34567]]86-*-windows*)	frag=mh-windows ;;
+####esac
 
-if [[ -n "${frag}" ]]; then
-  frag=${libiberty_topdir}/libiberty/config/$frag
-fi
+####if [[ -n "${frag}" ]]; then
+####  frag=${libiberty_topdir}/libiberty/config/$frag
+####fi
 
 GCC_PICFLAG
 
@@ -205,26 +205,26 @@ if [[ "${shared}" != "yes" ]]; then
 fi
 AC_SUBST(PICFLAG)
 
-echo "# Warning: this fragment is automatically generated" > temp-frag
+####echo "# Warning: this fragment is automatically generated" > temp-frag
 
-if [[ -n "${frag}" ]] && [[ -f "${frag}" ]]; then
-  echo "Appending ${frag} to xhost-mkfrag"
-  echo "# Following fragment copied from ${frag}" >> temp-frag
-  cat ${frag} >> temp-frag
-fi
+####if [[ -n "${frag}" ]] && [[ -f "${frag}" ]]; then
+####  echo "Appending ${frag} to xhost-mkfrag"
+####  echo "# Following fragment copied from ${frag}" >> temp-frag
+####  cat ${frag} >> temp-frag
+####fi
 
-# record if we want to build shared libs.
-if [[ "${shared}" = "yes" ]]; then
-  echo enable_shared = yes >> temp-frag
-else
-  echo enable_shared = no >> temp-frag
-fi
+##### record if we want to build shared libs.
+####if [[ "${shared}" = "yes" ]]; then
+####  echo enable_shared = yes >> temp-frag
+####else
+####  echo enable_shared = no >> temp-frag
+####fi
 
-frag=xhost-mkfrag
-${CONFIG_SHELL-/bin/sh} ${libiberty_topdir}/move-if-change temp-frag xhost-mkfrag
+####frag=xhost-mkfrag
+####${CONFIG_SHELL-/bin/sh} ${libiberty_topdir}/move-if-change temp-frag xhost-mkfrag
 
-host_makefile_frag=${frag}
-AC_SUBST_FILE(host_makefile_frag)
+####host_makefile_frag=${frag}
+####AC_SUBST_FILE(host_makefile_frag)
 
 # It's OK to check for header files.  Although the compiler may not be
 # able to link anything, it had better be able to at least compile
@@ -693,7 +693,8 @@ AC_SUBST(docdir)
 AC_SUBST(htmldir)
 
 # We need multilib support, but only if configuring for the target.
-AC_CONFIG_FILES([Makefile testsuite/Makefile])
+####AC_CONFIG_FILES([Makefile testsuite/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_CONFIG_COMMANDS([default],
   [[test -z "$CONFIG_HEADERS" || echo timestamp > stamp-h
 if test -n "$CONFIG_FILES"; then

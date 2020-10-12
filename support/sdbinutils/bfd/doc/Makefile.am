@@ -2,14 +2,14 @@
 
 AUTOMAKE_OPTIONS = 1.9 cygnus
 
-DOCFILES = aoutx.texi  archive.texi archures.texi \
-	bfdt.texi  cache.texi coffcode.texi \
-	core.texi elf.texi elfcode.texi  format.texi \
-	libbfd.texi bfdwin.texi bfdio.texi \
-	opncls.texi  reloc.texi  section.texi  \
-	syms.texi  targets.texi init.texi hash.texi linker.texi \
-	mmo.texi \
-	bfdver.texi
+####DOCFILES = aoutx.texi  archive.texi archures.texi \
+####	bfdt.texi  cache.texi coffcode.texi \
+####	core.texi elf.texi elfcode.texi  format.texi \
+####	libbfd.texi bfdwin.texi bfdio.texi \
+####	opncls.texi  reloc.texi  section.texi  \
+####	syms.texi  targets.texi init.texi hash.texi linker.texi \
+####	mmo.texi \
+####	bfdver.texi
 
 PROTOS = archive.p archures.p bfd.p \
 	 core.p format.p \
@@ -49,10 +49,10 @@ SRCIPROT = $(srcdir)/../cache.c $(srcdir)/../libbfd.c \
 	$(srcdir)/../cpu-i960.c $(srcdir)/../archures.c \
 	$(srcdir)/../init.c
 
-TEXIDIR = $(srcdir)/../../texinfo/fsf
+####TEXIDIR = $(srcdir)/../../texinfo/fsf
 
-info_TEXINFOS = bfd.texinfo
-bfd_TEXINFOS = $(DOCFILES) bfdsumm.texi
+####info_TEXINFOS = bfd.texinfo
+####bfd_TEXINFOS = $(DOCFILES) bfdsumm.texi
 
 MKDOC = chew$(EXEEXT_FOR_BUILD)
 
@@ -74,117 +74,117 @@ protos: libbfd.h libcoff.h bfd.h
 # program.  If somebody tries to rebuild info, but none of the .texi files
 # have changed, then nothing will be rebuilt.
 
-aoutx.texi: chew.c $(srcdir)/../aoutx.h $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../aoutx.h >aoutx.tmp
-	$(SHELL) $(srcdir)/../../move-if-change aoutx.tmp aoutx.texi
+####aoutx.texi: chew.c $(srcdir)/../aoutx.h $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../aoutx.h >aoutx.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change aoutx.tmp aoutx.texi
 
-archive.texi: chew.c $(srcdir)/../archive.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../archive.c >archive.tmp
-	$(SHELL) $(srcdir)/../../move-if-change archive.tmp archive.texi
+####archive.texi: chew.c $(srcdir)/../archive.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../archive.c >archive.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change archive.tmp archive.texi
 
-archures.texi: chew.c $(srcdir)/../archures.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../archures.c >archures.tmp
-	$(SHELL) $(srcdir)/../../move-if-change archures.tmp archures.texi
+####archures.texi: chew.c $(srcdir)/../archures.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../archures.c >archures.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change archures.tmp archures.texi
 
 # We use bfdt.texi, rather than bfd.texi, to avoid conflicting with
 # bfd.texinfo on an 8.3 filesystem.
-bfdt.texi: chew.c $(srcdir)/../bfd.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../bfd.c >bfd.tmp
-	$(SHELL) $(srcdir)/../../move-if-change bfd.tmp bfdt.texi
+####bfdt.texi: chew.c $(srcdir)/../bfd.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../bfd.c >bfd.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change bfd.tmp bfdt.texi
 
-cache.texi: chew.c $(srcdir)/../cache.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../cache.c >cache.tmp
-	$(SHELL) $(srcdir)/../../move-if-change cache.tmp cache.texi
+####cache.texi: chew.c $(srcdir)/../cache.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../cache.c >cache.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change cache.tmp cache.texi
 
-coffcode.texi: chew.c $(srcdir)/../coffcode.h $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../coffcode.h >coffcode.tmp
-	$(SHELL) $(srcdir)/../../move-if-change coffcode.tmp coffcode.texi
+####coffcode.texi: chew.c $(srcdir)/../coffcode.h $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../coffcode.h >coffcode.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change coffcode.tmp coffcode.texi
 
-core.texi: chew.c $(srcdir)/../corefile.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../corefile.c >core.tmp
-	$(SHELL) $(srcdir)/../../move-if-change core.tmp core.texi
+####core.texi: chew.c $(srcdir)/../corefile.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../corefile.c >core.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change core.tmp core.texi
 
-elf.texi: chew.c $(srcdir)/../elf.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../elf.c >elf.tmp
-	$(SHELL) $(srcdir)/../../move-if-change elf.tmp elf.texi
+####elf.texi: chew.c $(srcdir)/../elf.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../elf.c >elf.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change elf.tmp elf.texi
 
-elfcode.texi: chew.c $(srcdir)/../elfcode.h $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../elfcode.h >elfcode.tmp
-	$(SHELL) $(srcdir)/../../move-if-change elfcode.tmp elfcode.texi
+####elfcode.texi: chew.c $(srcdir)/../elfcode.h $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../elfcode.h >elfcode.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change elfcode.tmp elfcode.texi
 
-mmo.texi: chew.c $(srcdir)/../mmo.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../mmo.c >mmo.tmp
-	$(SHELL) $(srcdir)/../../move-if-change mmo.tmp mmo.texi
+####mmo.texi: chew.c $(srcdir)/../mmo.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../mmo.c >mmo.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change mmo.tmp mmo.texi
 
-format.texi: chew.c $(srcdir)/../format.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../format.c >format.tmp
-	$(SHELL) $(srcdir)/../../move-if-change format.tmp format.texi
+####format.texi: chew.c $(srcdir)/../format.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../format.c >format.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change format.tmp format.texi
 
-libbfd.texi: chew.c $(srcdir)/../libbfd.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../libbfd.c >libbfd.tmp
-	$(SHELL) $(srcdir)/../../move-if-change libbfd.tmp libbfd.texi
+####libbfd.texi: chew.c $(srcdir)/../libbfd.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../libbfd.c >libbfd.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change libbfd.tmp libbfd.texi
 
-bfdio.texi: chew.c $(srcdir)/../bfdio.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../bfdio.c >bfdio.tmp
-	$(SHELL) $(srcdir)/../../move-if-change bfdio.tmp bfdio.texi
+####bfdio.texi: chew.c $(srcdir)/../bfdio.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../bfdio.c >bfdio.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change bfdio.tmp bfdio.texi
 
-bfdwin.texi: chew.c $(srcdir)/../bfdwin.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../bfdwin.c >bfdwin.tmp
-	$(SHELL) $(srcdir)/../../move-if-change bfdwin.tmp bfdwin.texi
+####bfdwin.texi: chew.c $(srcdir)/../bfdwin.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str < $(srcdir)/../bfdwin.c >bfdwin.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change bfdwin.tmp bfdwin.texi
 
-opncls.texi: chew.c $(srcdir)/../opncls.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str  <$(srcdir)/../opncls.c >opncls.tmp
-	$(SHELL) $(srcdir)/../../move-if-change opncls.tmp opncls.texi
+####opncls.texi: chew.c $(srcdir)/../opncls.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str  <$(srcdir)/../opncls.c >opncls.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change opncls.tmp opncls.texi
 
-reloc.texi: chew.c $(srcdir)/../reloc.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../reloc.c >reloc.tmp
-	$(SHELL) $(srcdir)/../../move-if-change reloc.tmp reloc.texi
+####reloc.texi: chew.c $(srcdir)/../reloc.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../reloc.c >reloc.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change reloc.tmp reloc.texi
 
-section.texi: chew.c $(srcdir)/../section.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../section.c >section.tmp
-	$(SHELL) $(srcdir)/../../move-if-change section.tmp section.texi
+####section.texi: chew.c $(srcdir)/../section.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../section.c >section.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change section.tmp section.texi
 
-syms.texi: chew.c $(srcdir)/../syms.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../syms.c >syms.tmp
-	$(SHELL) $(srcdir)/../../move-if-change syms.tmp syms.texi
+####syms.texi: chew.c $(srcdir)/../syms.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../syms.c >syms.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change syms.tmp syms.texi
 
-targets.texi: chew.c $(srcdir)/../targets.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../targets.c >targets.tmp
-	$(SHELL) $(srcdir)/../../move-if-change targets.tmp targets.texi
+####targets.texi: chew.c $(srcdir)/../targets.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../targets.c >targets.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change targets.tmp targets.texi
 
-init.texi: chew.c $(srcdir)/../init.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../init.c >init.tmp
-	$(SHELL) $(srcdir)/../../move-if-change init.tmp init.texi
+####init.texi: chew.c $(srcdir)/../init.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../init.c >init.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change init.tmp init.texi
 
-hash.texi: chew.c $(srcdir)/../hash.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../hash.c >hash.tmp
-	$(SHELL) $(srcdir)/../../move-if-change hash.tmp hash.texi
+####hash.texi: chew.c $(srcdir)/../hash.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../hash.c >hash.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change hash.tmp hash.texi
 
-linker.texi: chew.c $(srcdir)/../linker.c $(srcdir)/doc.str
-	$(MAKE) $(MKDOC)
-	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../linker.c >linker.tmp
-	$(SHELL) $(srcdir)/../../move-if-change linker.tmp linker.texi
+####linker.texi: chew.c $(srcdir)/../linker.c $(srcdir)/doc.str
+####	$(MAKE) $(MKDOC)
+####	./$(MKDOC) -f $(srcdir)/doc.str <$(srcdir)/../linker.c >linker.tmp
+####	$(SHELL) $(srcdir)/../../move-if-change linker.tmp linker.texi
 
 LIBBFD_H_DEP = \
 	$(srcdir)/../libbfd-in.h	\
@@ -271,18 +271,18 @@ bfd.h: $(BFD_H_DEP)
 	echo "#endif" >> $@
 	echo "#endif" >> $@
 
-bfdver.texi: $(srcdir)/Makefile.in
-	@echo "creating $@"; \
-	echo "@set VERSION $(VERSION)" > bfdver.texi; \
-	if [ -n "$(PKGVERSION)" ]; then \
-	  echo "@set VERSION_PACKAGE $(PKGVERSION)" >> bfdver.texi; \
-	fi; \
-	echo "@set UPDATED `date '+%B %Y'`" >> bfdver.texi; \
-	if [ -n "$(REPORT_BUGS_TEXI)" ]; then \
-	  echo "@set BUGURL $(REPORT_BUGS_TEXI)" >> bfdver.texi; \
-	fi
+####bfdver.texi: $(srcdir)/Makefile.in
+####	@echo "creating $@"; \
+####	echo "@set VERSION $(VERSION)" > bfdver.texi; \
+####	if [ -n "$(PKGVERSION)" ]; then \
+####	  echo "@set VERSION_PACKAGE $(PKGVERSION)" >> bfdver.texi; \
+####	fi; \
+####	echo "@set UPDATED `date '+%B %Y'`" >> bfdver.texi; \
+####	if [ -n "$(REPORT_BUGS_TEXI)" ]; then \
+####	  echo "@set BUGURL $(REPORT_BUGS_TEXI)" >> bfdver.texi; \
+####	fi
 
-noinst_TEXINFOS = bfdint.texi
+####noinst_TEXINFOS = bfdint.texi
 
 MOSTLYCLEANFILES = $(MKDOC) *.o
 
@@ -290,17 +290,17 @@ CLEANFILES = *.p *.ip
 
 DISTCLEANFILES = bfd.?? bfd.??? bfd.h libbfd.h libcoff.h texput.log
 
-MAINTAINERCLEANFILES = $(DOCFILES)
+####MAINTAINERCLEANFILES = $(DOCFILES)
 
 # We want install to imply install-info as per GNU standards, despite the
 # cygnus option.
-install: install-info
+####install: install-info
 
-MAINTAINERCLEANFILES += bfd.info
+####MAINTAINERCLEANFILES += bfd.info
 
 # Automake 1.9 will only build info files in the objdir if they are
 # mentioned in DISTCLEANFILES.  It doesn't have to be unconditional,
 # though, so we use a bogus condition.
-if GENINSRC_NEVER
-DISTCLEANFILES += bfd.info
-endif
+####if GENINSRC_NEVER
+####DISTCLEANFILES += bfd.info
+####endif

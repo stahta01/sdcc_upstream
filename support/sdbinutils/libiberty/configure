@@ -666,7 +666,7 @@ PACKAGE_TARNAME
 PACKAGE_NAME
 PATH_SEPARATOR
 SHELL'
-ac_subst_files='host_makefile_frag'
+ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 with_target_subdir
@@ -3920,8 +3920,14 @@ ac_c_preproc_warn_flag=yes
 
 ac_libiberty_warn_cflags=
 save_CFLAGS="$CFLAGS"
-for option in -W -Wall -Wwrite-strings -Wc++-compat \
+for real_option in -W -Wall -Wwrite-strings -Wc++-compat \
 			  -Wstrict-prototypes; do
+  # Do the check with the no- prefix removed since gcc silently
+  # accepts any -Wno-* option on purpose
+  case $real_option in
+    -Wno-*) option=-W`expr x$real_option : 'x-Wno-\(.*\)'` ;;
+    *) option=$real_option ;;
+  esac
   as_acx_Woption=`$as_echo "acx_cv_prog_cc_warning_$option" | $as_tr_sh`
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $CC supports $option" >&5
@@ -3953,11 +3959,13 @@ eval ac_res=\$$as_acx_Woption
 	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
 $as_echo "$ac_res" >&6; }
   if test `eval 'as_val=${'$as_acx_Woption'};$as_echo "$as_val"'` = yes; then :
-  ac_libiberty_warn_cflags="$ac_libiberty_warn_cflags${ac_libiberty_warn_cflags:+ }$option"
+  ac_libiberty_warn_cflags="$ac_libiberty_warn_cflags${ac_libiberty_warn_cflags:+ }$real_option"
 fi
   done
 CFLAGS="$save_CFLAGS"
 
+# Do the check with the no- prefix removed from the warning options
+# since gcc silently accepts any -Wno-* option on purpose
 if test "$GCC" = yes; then :
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $CC supports -pedantic " >&5
 $as_echo_n "checking whether $CC supports -pedantic ... " >&6; }
@@ -4825,20 +4833,20 @@ if [ -n "${with_build_subdir}" ]; then
   enable_shared=no
 fi
 
-frag=
-case "${host}" in
-  rs6000-ibm-aix3.1 | rs6000-ibm-aix)
-                        frag=mh-aix ;;
-  *-*-cxux7*)		frag=mh-cxux7 ;;
-  *-*-freebsd2.1.*)	frag=mh-fbsd21 ;;
-  *-*-freebsd2.2.[012])	frag=mh-fbsd21 ;;
-  i370-*-opened*)       frag=mh-openedition ;;
-  i[34567]86-*-windows*)	frag=mh-windows ;;
-esac
+####frag=
+####case "${host}" in
+####  rs6000-ibm-aix3.1 | rs6000-ibm-aix)
+####                        frag=mh-aix ;;
+####  *-*-cxux7*)		frag=mh-cxux7 ;;
+####  *-*-freebsd2.1.*)	frag=mh-fbsd21 ;;
+####  *-*-freebsd2.2.[[012]])	frag=mh-fbsd21 ;;
+####  i370-*-opened*)       frag=mh-openedition ;;
+####  i[[34567]]86-*-windows*)	frag=mh-windows ;;
+####esac
 
-if [ -n "${frag}" ]; then
-  frag=${libiberty_topdir}/libiberty/config/$frag
-fi
+####if [[ -n "${frag}" ]]; then
+####  frag=${libiberty_topdir}/libiberty/config/$frag
+####fi
 
 
 
@@ -4859,7 +4867,7 @@ case "${host}" in
 	;;
     i[34567]86-*-cygwin* | i[34567]86-*-mingw* | x86_64-*-mingw*)
 	;;
-    i[34567]86-*-interix3*)
+    i[34567]86-*-interix[3-9]*)
 	# Interix 3.x gcc -fpic/-fPIC options generate broken code.
 	# Instead, we relocate shared libraries at runtime.
 	;;
@@ -4889,9 +4897,6 @@ case "${host}" in
 	PICFLAG=-fpic
 	;;
     m68k-*-*)
-	PICFLAG=-fpic
-	;;
-    s390*-*-*)
 	PICFLAG=-fpic
 	;;
     # FIXME: Override -fPIC default in libgcc only?
@@ -4932,26 +4937,26 @@ if [ "${shared}" != "yes" ]; then
 fi
 
 
-echo "# Warning: this fragment is automatically generated" > temp-frag
+####echo "# Warning: this fragment is automatically generated" > temp-frag
 
-if [ -n "${frag}" ] && [ -f "${frag}" ]; then
-  echo "Appending ${frag} to xhost-mkfrag"
-  echo "# Following fragment copied from ${frag}" >> temp-frag
-  cat ${frag} >> temp-frag
-fi
+####if [[ -n "${frag}" ]] && [[ -f "${frag}" ]]; then
+####  echo "Appending ${frag} to xhost-mkfrag"
+####  echo "# Following fragment copied from ${frag}" >> temp-frag
+####  cat ${frag} >> temp-frag
+####fi
 
-# record if we want to build shared libs.
-if [ "${shared}" = "yes" ]; then
-  echo enable_shared = yes >> temp-frag
-else
-  echo enable_shared = no >> temp-frag
-fi
+##### record if we want to build shared libs.
+####if [[ "${shared}" = "yes" ]]; then
+####  echo enable_shared = yes >> temp-frag
+####else
+####  echo enable_shared = no >> temp-frag
+####fi
 
-frag=xhost-mkfrag
-${CONFIG_SHELL-/bin/sh} ${libiberty_topdir}/move-if-change temp-frag xhost-mkfrag
+####frag=xhost-mkfrag
+####${CONFIG_SHELL-/bin/sh} ${libiberty_topdir}/move-if-change temp-frag xhost-mkfrag
 
-host_makefile_frag=${frag}
-
+####host_makefile_frag=${frag}
+####AC_SUBST_FILE(host_makefile_frag)
 
 # It's OK to check for header files.  Although the compiler may not be
 # able to link anything, it had better be able to at least compile
@@ -6816,7 +6821,7 @@ if test "${ac_cv_func_strncmp_works+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
   if test "$cross_compiling" = yes; then :
-  ac_cv_func_strncmp_works=no
+  ac_cv_func_strncmp_works=yes
 else
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -6929,7 +6934,8 @@ LIBOBJS="$L"
 
 
 # We need multilib support, but only if configuring for the target.
-ac_config_files="$ac_config_files Makefile testsuite/Makefile"
+####AC_CONFIG_FILES([Makefile testsuite/Makefile])
+ac_config_files="$ac_config_files Makefile"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -7633,7 +7639,6 @@ do
   case $ac_config_target in
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h:config.in" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "testsuite/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/Makefile" ;;
     "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
 
   *) as_fn_error "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
@@ -7681,24 +7686,7 @@ $debug ||
 # This happens for instance with `./config.status config.h'.
 if test -n "$CONFIG_FILES"; then
 
-if $AWK 'BEGIN { getline <"/dev/null" }' </dev/null 2>/dev/null; then
-  ac_cs_awk_getline=:
-  ac_cs_awk_pipe_init=
-  ac_cs_awk_read_file='
-      while ((getline aline < (F[key])) > 0)
-	print(aline)
-      close(F[key])'
-  ac_cs_awk_pipe_fini=
-else
-  ac_cs_awk_getline=false
-  ac_cs_awk_pipe_init="print \"cat <<'|#_!!_#|' &&\""
-  ac_cs_awk_read_file='
-      print "|#_!!_#|"
-      print "cat " F[key] " &&"
-      '$ac_cs_awk_pipe_init
-  # The final `:' finishes the AND list.
-  ac_cs_awk_pipe_fini='END { print "|#_!!_#|"; print ":" }'
-fi
+
 ac_cr=`echo X | tr X '\015'`
 # On cygwin, bash can eat \r inside `` if the user requested igncr.
 # But we know of no other shell where ac_cr would be empty at this
@@ -7716,17 +7704,6 @@ fi
 echo 'BEGIN {' >"$tmp/subs1.awk" &&
 _ACEOF
 
-# Create commands to substitute file output variables.
-{
-  echo "cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1" &&
-  echo 'cat >>"\$tmp/subs1.awk" <<\\_ACAWK &&' &&
-  echo "$ac_subst_files" | sed 's/.*/F["&"]="$&"/' &&
-  echo "_ACAWK" &&
-  echo "_ACEOF"
-} >conf$$files.sh &&
-. ./conf$$files.sh ||
-  as_fn_error "could not make $CONFIG_STATUS" "$LINENO" 5
-rm -f conf$$files.sh
 
 {
   echo "cat >conf$$subs.awk <<_ACEOF" &&
@@ -7803,7 +7780,7 @@ _ACAWK
 cat >>"\$tmp/subs1.awk" <<_ACAWK &&
   for (key in S) S_is_set[key] = 1
   FS = ""
-  \$ac_cs_awk_pipe_init
+
 }
 {
   line = $ 0
@@ -7821,16 +7798,10 @@ cat >>"\$tmp/subs1.awk" <<_ACAWK &&
     } else
       len += 1 + keylen
   }
-  if (nfields == 3 && !substed) {
-    key = field[2]
-    if (F[key] != "" && line ~ /^[	 ]*@.*@[	 ]*$/) {
-      \$ac_cs_awk_read_file
-      next
-    }
-  }
+
   print line
 }
-\$ac_cs_awk_pipe_fini
+
 _ACAWK
 _ACEOF
 cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
@@ -8163,12 +8134,7 @@ s&@abs_top_builddir@&$ac_abs_top_builddir&;t t
 s&@INSTALL@&$ac_INSTALL&;t t
 $ac_datarootdir_hack
 "
-eval sed \"\$ac_sed_extra\" "$ac_file_inputs" |
-if $ac_cs_awk_getline; then
-  $AWK -f "$tmp/subs.awk"
-else
-  $AWK -f "$tmp/subs.awk" | $SHELL
-fi >$tmp/out \
+eval sed \"\$ac_sed_extra\" "$ac_file_inputs" | $AWK -f "$tmp/subs.awk" >$tmp/out \
   || as_fn_error "could not create $ac_file" "$LINENO" 5
 
 test -z "$ac_datarootdir_hack$ac_datarootdir_seen" &&
