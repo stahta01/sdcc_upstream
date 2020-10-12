@@ -123,8 +123,8 @@ if test $want_elf_stt_common = true; then
     [Define if we may generate symbols with ELF's STT_COMMON type])
 fi
 
-ACX_PKGVERSION([GNU Binutils])
-ACX_BUGURL([http://www.sourceware.org/bugzilla/])
+ACX_PKGVERSION([sdbinutils derived from GNU Binutils])
+ACX_BUGURL([https://sourceforge.net/p/sdcc/bugs/])
 
 AM_BINUTILS_WARNINGS
 
@@ -138,6 +138,8 @@ AH_VERBATIM([00_CONFIG_H_CHECK],
 #  error config.h must be #included before system headers
 #endif
 #define __CONFIG_H__ 1])
+
+target=asxxxx-unknown-unknown
 
 if test -z "$target" ; then
     AC_MSG_ERROR(Unrecognized target system type; please check config.sub.)
@@ -1025,6 +1027,8 @@ do
     tekhex_vec)			 tb="$tb tekhex.lo" ;;
     core_cisco_be_vec)		 tb="$tb cisco-core.lo" ;;
     core_cisco_le_vec)		 tb="$tb cisco-core.lo" ;;
+
+    asxxxx_vec)			tb="$tb asxxxx.lo"; want64=false; host64=false; target64=false ;;
 
     "")				 ;;
     *) AC_MSG_ERROR(*** unknown target vector $vec) ;;
