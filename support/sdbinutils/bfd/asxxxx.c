@@ -1061,7 +1061,7 @@ asxxxx_print_symbol (bfd *abfd,
 #define asxxxx_close_and_cleanup                    _bfd_generic_close_and_cleanup
 #define asxxxx_bfd_free_cached_info                 _bfd_generic_bfd_free_cached_info
 #define asxxxx_new_section_hook                     _bfd_generic_new_section_hook
-#define asxxxx_bfd_is_target_special_symbol         ((bfd_boolean (*) (bfd *, asymbol *)) bfd_false)
+#define asxxxx_bfd_is_target_special_symbol         ((bfd_boolean (*) (bfd *, asymbol *)) _bfd_bool_bfd_false_error)
 #define asxxxx_bfd_is_local_label_name              bfd_generic_is_local_label_name
 #define asxxxx_get_lineno                           _bfd_nosymbols_get_lineno
 #define asxxxx_find_nearest_line                    _bfd_nosymbols_find_nearest_line
@@ -1080,6 +1080,7 @@ asxxxx_print_symbol (bfd *abfd,
 #define asxxxx_bfd_discard_group                    bfd_generic_discard_group
 #define asxxxx_section_already_linked               _bfd_generic_section_already_linked
 #define asxxxx_bfd_define_common_symbol             bfd_generic_define_common_symbol
+#define asxxxx_bfd_link_hide_symbol                 _bfd_generic_link_hide_symbol
 #define asxxxx_bfd_link_hash_table_create           _bfd_generic_link_hash_table_create
 #define asxxxx_bfd_link_hash_table_free             _bfd_generic_link_hash_table_free
 #define asxxxx_bfd_link_add_symbols                 _bfd_generic_link_add_symbols
@@ -1120,16 +1121,16 @@ const bfd_target asxxxx_vec =
     _bfd_dummy_target,          /* core */
   },
   {     /* Set the format of a file being written.  */
-    bfd_false,
+    _bfd_bool_bfd_false_error,
     asxxxx_mkobject,            /* object */
     _bfd_generic_mkarchive,     /* archive */
-    bfd_false,                  /* core */
+    _bfd_bool_bfd_false_error,                  /* core */
   },
   {     /* Write cached information into a file being written, at <<bfd_close>>.  */
-    bfd_false,
-    bfd_false, //    asxxxx_write_object_contents, /* object */
+    _bfd_bool_bfd_false_error,
+    _bfd_bool_bfd_false_error, //    asxxxx_write_object_contents, /* object */
     _bfd_write_archive_contents,  /* archive */
-    bfd_false,                    /* core */
+    _bfd_bool_bfd_false_error,                    /* core */
   },
 
   BFD_JUMP_TABLE_GENERIC (asxxxx),

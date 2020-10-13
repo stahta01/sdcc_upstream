@@ -165,7 +165,8 @@ DESCRIPTION
 .  bfd_target_mach_o_flavour,
 .  bfd_target_pef_flavour,
 .  bfd_target_pef_xlib_flavour,
-.  bfd_target_sym_flavour
+.  bfd_target_sym_flavour,
+.  bfd_target_asxxxx_flavour
 .};
 .
 .enum bfd_endian { BFD_ENDIAN_BIG, BFD_ENDIAN_LITTLE, BFD_ENDIAN_UNKNOWN };
@@ -586,6 +587,8 @@ to find an alternative output format that is suitable.
    Alphabetized for easy reference.
    They are listed a second time below, since
    we can't intermix extern's and initializers.  */
+extern const bfd_target asxxxx_vec;
+
 extern const bfd_target aarch64_elf32_be_vec;
 extern const bfd_target aarch64_elf32_le_vec;
 extern const bfd_target aarch64_elf64_be_vec;
@@ -887,9 +890,11 @@ static const bfd_target * const _bfd_target_vector[] =
 
 #else /* not SELECT_VECS */
 
-#ifdef DEFAULT_VECTOR
+//#ifdef DEFAULT_VECTOR
+#if 0
 	&DEFAULT_VECTOR,
 #endif
+        &asxxxx_vec,
 	/* This list is alphabetized to make it easy to compare
 	   with other vector lists -- the decls above and
 	   the case statement in configure.ac.
@@ -1716,6 +1721,7 @@ bfd_flavour_name (enum bfd_flavour flavour)
     case bfd_target_pef_flavour: return "PEF";
     case bfd_target_pef_xlib_flavour: return "PEF_XLIB";
     case bfd_target_sym_flavour: return "SYM";
+    case bfd_target_asxxxx_flavour: return "ASXXXX";
     /* There is no "default" case here so that -Wswitch (part of -Wall)
        catches missing entries.  */
     }

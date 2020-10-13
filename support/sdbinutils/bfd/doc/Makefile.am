@@ -68,7 +68,7 @@ SRCIPROT = $(srcdir)/../cache.c $(srcdir)/../libbfd.c \
 
 TEXIDIR = $(srcdir)/../../texinfo/fsf
 
-info_TEXINFOS = bfd.texi
+info_TEXINFOS = bfd.texinfo
 bfd_TEXINFOS = $(DOCFILES) bfdsumm.texi
 
 MKDOC = chew$(EXEEXT_FOR_BUILD)
@@ -365,6 +365,7 @@ MAINTAINERCLEANFILES = $(DOCFILES)
 
 # We want install to imply install-info as per GNU standards, despite the
 # cygnus option.
-install: install-info
+# Do not install info documentation when installing SDCC
+# install: install-info
 
 MAINTAINERCLEANFILES += bfd.info

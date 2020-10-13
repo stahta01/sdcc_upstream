@@ -20,7 +20,7 @@
 AUTOMAKE_OPTIONS = dejagnu no-dist foreign
 ACLOCAL_AMFLAGS = -I .. -I ../config -I ../bfd
 
-SUBDIRS = doc po
+SUBDIRS =
 
 tooldir = $(exec_prefix)/$(target_alias)
 
@@ -43,7 +43,13 @@ am__skipyacc =
 # This is where we get zlib from.  zlibdir is -L../zlib and zlibinc is
 # -I../zlib, unless we were configured with --with-system-zlib, in which
 # case both are empty.
-ZLIB = @zlibdir@ -lz
+# Try to statically link libz when cross compiling to Windows so that we
+# don't need to package the dll
+ifeq ($(CROSSCOMPILING), 1)
+ ZLIB = @zlibdir@ -Wl,-Bstatic -lz -Wl,-Bdynamic
+else
+ ZLIB = @zlibdir@ -lz
+endif
 ZLIBINC = @zlibinc@
 
 WARN_CFLAGS = @WARN_CFLAGS@
@@ -54,11 +60,11 @@ AM_CFLAGS_FOR_BUILD = $(WARN_CFLAGS_FOR_BUILD) $(ZLIBINC)
 LIBICONV = @LIBICONV@
 
 # these two are almost the same program
-AR_PROG=ar
-RANLIB_PROG=ranlib
+AR_PROG=sdar
+RANLIB_PROG=sdranlib
 
 # objcopy and strip should be the same program
-OBJCOPY_PROG=objcopy
+OBJCOPY_PROG=sdobjcopy
 STRIP_PROG=strip-new
 
 STRINGS_PROG=strings
@@ -69,8 +75,8 @@ ELFEDIT_PROG=elfedit
 
 # These should all be the same program too.
 SIZE_PROG=size
-NM_PROG=nm-new
-OBJDUMP_PROG=objdump
+NM_PROG=sdnm
+#OBJDUMP_PROG=objdump
 
 # This is the demangler, as a standalone program.
 # Note: This one is used as the installed name too, unlike the above.
@@ -85,7 +91,7 @@ DLLWRAP_PROG=dllwrap
 
 SRCONV_PROG=srconv$(EXEEXT) sysdump$(EXEEXT) coffdump$(EXEEXT)
 
-bin_PROGRAMS = $(SIZE_PROG) $(OBJDUMP_PROG) $(AR_PROG) $(STRINGS_PROG) $(RANLIB_PROG) $(OBJCOPY_PROG) @BUILD_SRCONV@ @BUILD_DLLTOOL@ @BUILD_WINDRES@ @BUILD_WINDMC@ $(ADDR2LINE_PROG) $(READELF_PROG) $(ELFEDIT_PROG) @BUILD_DLLWRAP@
+bin_PROGRAMS = $(AR_PROG) $(RANLIB_PROG) $(OBJCOPY_PROG)
 
 bin_SCRIPTS = @BUILD_INSTALL_MISC@
 EXTRA_SCRIPTS = embedspu
@@ -98,13 +104,13 @@ TEST_PROGS = $(BFDTEST1_PROG) $(BFDTEST2_PROG)
 
 ## We need a special rule to install the programs which are built with
 ## -new, and to rename cxxfilt to c++filt.
-RENAMED_PROGS = $(NM_PROG) $(STRIP_PROG) $(DEMANGLER_PROG)
+RENAMED_PROGS = $(NM_PROG)
 noinst_PROGRAMS = $(RENAMED_PROGS) $(TEST_PROGS) @BUILD_MISC@
 
-EXTRA_PROGRAMS = srconv sysdump coffdump $(DLLTOOL_PROG) $(WINDRES_PROG) $(WINDMC_PROG) $(DLLWRAP_PROG)
+EXTRA_PROGRAMS = 
 
 # Stuff that goes in tooldir/ if appropriate.
-TOOL_PROGS = nm-new strip-new ar ranlib dlltool objdump objcopy readelf
+TOOL_PROGS = sdnm sdar sdranlib sdobjcopy
 
 BASEDIR = $(srcdir)/..
 BFDDIR = $(BASEDIR)/bfd
