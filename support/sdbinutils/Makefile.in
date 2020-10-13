@@ -2579,13 +2579,7 @@ install-target:  \
     maybe-install-target-libatomic
 
 uninstall:
-	@: $(MAKE); $(unstage)
-	@r=`${PWD_COMMAND}`; export r; \
-	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
-	$(MAKE) $(RECURSE_FLAGS_TO_PASS) uninstall-host
-
-.PHONY: uninstall-host
-uninstall-host: maybe-uninstall-binutils
+	@echo "the uninstall target is not supported in this tree"
 
 .PHONY: install.all
 install.all: install-no-fixedincludes
@@ -5419,7 +5413,7 @@ check-binutils:
 
 @endif binutils
 
-.PHONY: install-binutils maybe-install-binutils uninstall-binutils maybe-uninstall-binutils
+.PHONY: install-binutils maybe-install-binutils
 maybe-install-binutils:
 @if binutils
 maybe-install-binutils: install-binutils
@@ -5432,18 +5426,6 @@ install-binutils: installdirs
 	(cd $(HOST_SUBDIR)/binutils && \
 	  $(MAKE) $(FLAGS_TO_PASS)  install)
 
-@endif binutils
-
-maybe-uninstall-binutils:
-@if binutils
-maybe-uninstall-binutils: uninstall-binutils
-uninstall-binutils:
-	@: $(MAKE); $(unstage)
-	@r=`${PWD_COMMAND}`; export r; \
-	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
-	$(HOST_EXPORTS) \
-	(cd $(HOST_SUBDIR)/binutils && \
-	  $(MAKE) $(FLAGS_TO_PASS)  uninstall)
 @endif binutils
 
 .PHONY: install-strip-binutils maybe-install-strip-binutils
@@ -46926,6 +46908,10 @@ maintainer-clean-target-libatomic:
 check-target-libgomp-c++:
 	$(MAKE) RUNTESTFLAGS="$(RUNTESTFLAGS) c++.exp" check-target-libgomp
 
+.PHONY: check-target-libgomp-fortran
+check-target-libgomp-fortran:
+	$(MAKE) RUNTESTFLAGS="$(RUNTESTFLAGS) fortran.exp" check-target-libgomp
+
 @endif target-libgomp
 
 @if target-libitm
@@ -46977,7 +46963,7 @@ check-gcc-fortran:
 	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
 	$(HOST_EXPORTS) \
 	(cd gcc && $(MAKE) $(GCC_FLAGS_TO_PASS) check-fortran);
-check-fortran: check-gcc-fortran check-target-libquadmath check-target-libgfortran
+check-fortran: check-gcc-fortran check-target-libquadmath check-target-libgfortran check-target-libgomp-fortran
 
 .PHONY: check-gcc-ada check-ada
 check-gcc-ada:
