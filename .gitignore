@@ -56,3 +56,5 @@ dkms.conf
 
 # Binary Language Files
 *.gmo
+/support/sdbinutils/binutils/testsuite
+/support/sdbinutils/binutils/po
