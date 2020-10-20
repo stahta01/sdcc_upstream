@@ -58,3 +58,4 @@ dkms.conf
 *.gmo
 /support/sdbinutils/binutils/testsuite
 /support/sdbinutils/binutils/po
+/support/sdbinutils/src-release.sh
